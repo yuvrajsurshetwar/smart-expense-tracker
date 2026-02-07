@@ -14,7 +14,7 @@ train_data = pd.DataFrame({
         "bus","uber","auto","train","travel","metro","cab","flight","petrol",
         "shirt","jeans","tshirt","shopping","mall","clothes","shoes",
         "book","pen","notebook","college fee","course",
-        "medicine","doctor","hospital","checkup",
+        "medicine","doctor","hospital","clinic","tablet","checkup","syrup","injection",
         "movie","netflix","game","music","party"
     ],
     "Category": [
@@ -22,7 +22,7 @@ train_data = pd.DataFrame({
         "travel","travel","travel","travel","travel","travel","travel","travel","travel",
         "shopping","shopping","shopping","shopping","shopping","shopping","shopping",
         "education","education","education","education","education",
-        "health","health","health","health",
+        "health","health","health","health","health","health","health","health",
         "entertainment","entertainment","entertainment","entertainment","entertainment"
     ]
 })
@@ -101,3 +101,4 @@ if st.session_state.data:
     # ---------- DOWNLOAD CSV ----------
     csv = df.to_csv(index=False)
     st.download_button("Download CSV", csv, "expenses.csv", "text/csv")
+
