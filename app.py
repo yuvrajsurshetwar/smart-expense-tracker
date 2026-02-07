@@ -5,7 +5,7 @@ from sklearn.naive_bayes import MultinomialNB
 from difflib import get_close_matches
 import matplotlib.pyplot as plt
 
-st.title("💰 Smart Expense Tracker (AI Based)")
+st.title("💰 Intelligent Expense Tracker")
 
 # ---------- TRAINING DATA ----------
 train_data = pd.DataFrame({
@@ -101,4 +101,5 @@ if st.session_state.data:
     # ---------- DOWNLOAD CSV ----------
     csv = df.to_csv(index=False)
     st.download_button("Download CSV", csv, "expenses.csv", "text/csv")
+
 
