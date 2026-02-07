@@ -10,44 +10,20 @@ st.title("💰 Smart Expense Tracker (AI Based)")
 # ---------- TRAINING DATA ----------
 train_data = pd.DataFrame({
     "Name": [
-        # FOOD
         "pizza","burger","sandwich","food","dinner","lunch","breakfast",
-        "rice","roti","dal","paneer","biryani","noodles","coffee","tea","milk","cake",
-
-        # TRAVEL
-        "bus","bus ticket","uber","auto","train","travel","metro","cab","flight","petrol","diesel","bike fuel","parking",
-
-        # SHOPPING
-        "shirt","jeans","tshirt","shopping","mall","clothes","shoes","watch","bag","mobile","laptop","headphones",
-
-        # EDUCATION
-        "book","notebook","pen","pencil","college fee","exam fee","tuition","course","stationery",
-
-        # HEALTH
-        "medicine","doctor","hospital","tablet","checkup","health insurance","vitamins",
-
-        # ENTERTAINMENT
-        "movie","cinema","netflix","game","concert","music","subscription","party"
+        "bus","uber","auto","train","travel","metro","cab","flight","petrol",
+        "shirt","jeans","tshirt","shopping","mall","clothes","shoes",
+        "book","pen","notebook","college fee","course",
+        "medicine","doctor","hospital","checkup",
+        "movie","netflix","game","music","party"
     ],
     "Category": [
-        # FOOD
         "food","food","food","food","food","food","food",
-        "food","food","food","food","food","food","food","food","food","food",
-
-        # TRAVEL
-        "travel","travel","travel","travel","travel","travel","travel","travel","travel","travel","travel","travel","travel",
-
-        # SHOPPING
-        "shopping","shopping","shopping","shopping","shopping","shopping","shopping","shopping","shopping","shopping","shopping","shopping",
-
-        # EDUCATION
-        "education","education","education","education","education","education","education","education","education",
-
-        # HEALTH
-        "health","health","health","health","health","health","health",
-
-        # ENTERTAINMENT
-        "entertainment","entertainment","entertainment","entertainment","entertainment","entertainment","entertainment","entertainment"
+        "travel","travel","travel","travel","travel","travel","travel","travel","travel",
+        "shopping","shopping","shopping","shopping","shopping","shopping","shopping",
+        "education","education","education","education","education",
+        "health","health","health","health",
+        "entertainment","entertainment","entertainment","entertainment","entertainment"
     ]
 })
 
@@ -73,21 +49,16 @@ if st.button("Add Expense"):
     if name:
         word = name.lower()
 
-        # CASE 1: correct spelling
         if word in vocab:
             pred = model.predict(vectorizer.transform([word]))[0]
             st.session_state.data.append([name, amount, pred])
             st.success(f"Predicted Category: {pred}")
-
-        # CASE 2: spelling mistake
         else:
             close = get_close_matches(word, vocab, n=1, cutoff=0.7)
 
             if close:
                 st.warning(f"⚠ Spelling mistake! Did you mean '{close[0]}' ?")
                 st.info("Expense NOT added. Please correct spelling.")
-
-            # CASE 3: unknown word
             else:
                 st.error("❌ Unknown expense name! Expense NOT added.")
     else:
@@ -100,7 +71,22 @@ if st.session_state.data:
     st.subheader("All Expenses")
     st.dataframe(df, use_container_width=True)
 
-    # ---------- GRAPH (FIXED SIZE) ----------
+    # ---------- DELETE FEATURE ----------
+    st.subheader("🗑 Delete Expense")
+
+    delete_index = st.number_input(
+        "Enter row number to delete (start from 0)",
+        min_value=0,
+        max_value=len(df)-1,
+        step=1
+    )
+
+    if st.button("Delete Selected Expense"):
+        st.session_state.data.pop(delete_index)
+        st.success("Expense deleted successfully!")
+        st.rerun()
+
+    # ---------- GRAPH ----------
     summary = df.groupby("Category")["Amount"].sum()
 
     fig = plt.figure(figsize=(6, 4))
