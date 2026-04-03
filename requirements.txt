@@ -1,0 +1,5 @@
+streamlit
+pandas
+scikit-learn
+matplotlib
+app live link : https://smart-expense-tracker-kmdn5mrsipumeelc6szm6o.streamlit.app/
